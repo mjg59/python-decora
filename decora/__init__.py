@@ -15,7 +15,7 @@ class decora:
     self.mac = mac
     if isinstance(key, str):
       self.key = int(key).to_bytes(4, byteorder='big')
-    else if isinstance(key, int):
+    elif isinstance(key, int):
       self.key = key.to_bytes(4, byteorder='big')
     else:
       self.key = key
