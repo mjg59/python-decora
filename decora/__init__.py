@@ -6,9 +6,11 @@
 # for more details.
 
 import sys
-import time
 
 from bluepy import btle
+
+class decoraException(Exception):
+  pass
 
 class decora:
   def __init__(self, mac, key=None):
@@ -22,7 +24,10 @@ class decora:
 
   def _connect(self):
     self.device = btle.Peripheral(self.mac, addrType=btle.ADDR_TYPE_PUBLIC)
-    characteristics = self.device.getCharacteristics()
+    try:
+      characteristics = self.device.getCharacteristics()
+    except btle.BTLEException:
+      raise decoraException("Unable to connect")
     self.handles = {}
     for characteristic in characteristics:
       if characteristic.uuid == "0000ff01-0000-1000-8000-00805f9b34fb":
@@ -72,48 +77,25 @@ class decora:
 
   def get_event(self, event):
     packet = bytearray([0x22, event, 0x00, 0x00, 0x00, 0x00])
-    initial = time.time()
-    while True:
-      if time.time() - initial >= 10:
-        return False
-      try:
-        self.device.writeCharacteristic(self.handles["event"], packet, withResponse=True)
-        return self.device.readCharacteristic(self.handles["event"])
-      except Exception as e:
-        try:
-          self.connect()
-        except:
-          pass
+    try:
+      self.device.writeCharacteristic(self.handles["event"], packet, withResponse=True)
+      return self.device.readCharacteristic(self.handles["event"])
+    except btle.BTLEException:
+      raise decoraException("Unable to get event")
 
   def set_event(self, event, data):
     packet = bytearray([0x11, event, data[0], data[1], data[2], data[3]])
-    initial = time.time()
-    while True:
-      if time.time() - initial >= 10:
-        return False
-      try:
-        self.device.writeCharacteristic(self.handles["event"], packet, withResponse=True)
-        return
-      except Exception as e:
-        try:
-          self.connect()
-        except:
-          pass
+    try:
+      self.device.writeCharacteristic(self.handles["event"], packet, withResponse=True)
+    except btle.BTLEException:
+      raise decoraException("Unable to set event")
 
   def set_state(self):
     packet = bytearray([self.power, self.level])
-    initial = time.time()
-    while True:
-      if time.time() - initial >= 10:
-        return False
-      try:
-        self.device.writeCharacteristic(self.handles["state"], packet, withResponse=True)
-        return
-      except Exception as e:
-        try:
-          self.connect()
-        except:
-          pass
+    try:
+      self.device.writeCharacteristic(self.handles["state"], packet, withResponse=True)
+    except btle.BTLEException:
+      raise decoraException("Unable to set state")
 
   def off(self):
     self.update_state()

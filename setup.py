@@ -8,11 +8,11 @@ import warnings
 
 dynamic_requires = []
 
-version = 0.5
+version = 0.6
 
 setup(
     name='decora',
-    version=0.5,
+    version=0.6,
     author='Matthew Garrett',
     author_email='mjg59@srcf.ucam.org',
     url='http://github.com/mjg59/python-decora',
