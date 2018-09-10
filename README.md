@@ -1,7 +1,7 @@
 Python control for Leviton Decora Bluetooth switches
 ====================================================
 
-A simple Python API for controlling [Leviton Decora switches](http://www.leviton.com/OA_HTML/SectionDisplay.jsp?section=76089&minisite=10251).
+A simple Python API for controlling [Leviton Decora switches](https://www.leviton.com/en/products/brands/decora-smart).
 
 Example use
 -----------
