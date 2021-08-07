@@ -29,3 +29,6 @@ Obtaining the key
 -----------------
 
 Obtain the key by holding the down button on the switch until the green light flashes, and then run the get_key script.
+
+**Noted on firmware 6.4**: `get_key.py` may not work on firmware version 6.4 as the key changing process is updated. However,
+if you are able to get the key manually (e.g. from BLE sniffering), the library should still expect to work.

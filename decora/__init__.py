@@ -84,7 +84,7 @@ class decora:
       raise decoraException("Unable to get event")
 
   def set_event(self, event, data):
-    packet = bytearray([0x11, event, data[0], data[1], data[2], data[3]])
+    packet = bytearray([0x11, event, *data])
     try:
       self.device.writeCharacteristic(self.handles["event"], packet, withResponse=True)
     except btle.BTLEException:
